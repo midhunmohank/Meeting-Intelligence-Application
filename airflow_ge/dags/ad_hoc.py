@@ -9,6 +9,14 @@ from airflow.models.param import Param
 from datetime import timedelta, datetime
 import snowflake.connector
 
+openai.api_key = "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"
+
+
+s3 = boto3.client(
+    's3',
+    aws_access_key_id="AKIAZW4EPXNK5AQIEQWO",
+    aws_secret_access_key="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",
+)
 
 
 # Function to call GPT API with a message 
@@ -45,19 +53,18 @@ def generate_txt_file(bucket_name, file_name):
 
 
 def send_query(audio_file, transcript):
-    
-    print(transcript)
-    response_summary = get_response_gpt(f"Give me a summary of the following text {transcript}")
+    response_summary = get_response_gpt(f"Give me a summary of the following meeting transcript {transcript}")
+    response_no_of_people  = get_response_gpt(f"Provide some feedback on the nature of the discussion the tone of the attendees in this meeting from the transcript {transcript}")
     summary = response_summary["choices"][0]["message"]["content"] 
-    print(summary)
-    query = f"INSERT INTO QUERY_RESULTS (AUDIO_FILE, SUMMARY, NO_OF_PEOPLE, UPLOADED_AT) VALUES ('{audio_file}', '{summary}', '5', CURRENT_TIMESTAMP);"
+    no_of_people = response_no_of_people["choices"][0]["message"]["content"]
+    query = f"INSERT INTO QUERY_RESULTS (AUDIO_FILE, SUMMARY, NO_OF_PEOPLE, UPLOADED_AT) VALUES ('{audio_file}', '{summary}', '{no_of_people}', CURRENT_TIMESTAMP);"
     conn = create_connection()
     cur = conn.cursor()
     cur.execute(query)
     conn.commit()
     cur.close()
     conn.close()
-    return response_summary
+    return response_summary, response_no_of_people
     
 
 dag = DAG(
@@ -83,7 +90,7 @@ with dag:
         task_id="send_query",
         python_callable=send_query, 
         op_kwargs={
-            "audio_file": "{{ task_instance.xcom_pull(task_ids='get_transcript', key='file') }}",
+            'audio_file': '{{ dag_run.conf["file_name"] }}'.split('/')[-1],
             "transcript": "{{ task_instance.xcom_pull(task_ids='get_transcript', key='return_value') }}"
         },
         provide_context=True,
