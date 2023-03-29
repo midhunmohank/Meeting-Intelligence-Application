@@ -58,7 +58,7 @@ def processed_query(file, query):
     cursor = conn.cursor()
 
     # Execute the SQL query
-    cursor.execute(f"SELECT {query} FROM QUERY_RESULTS WHERE FILE = {file}")
+    cursor.execute(f"SELECT {query} FROM QUERY_RESULTS WHERE AUDIO_FILE = '{file}'")
 
     # Fetch all the results into a list
     results = cursor.fetchall()
@@ -70,4 +70,4 @@ def processed_query(file, query):
     return results 
 
 
-processed_query("1680036452.mp3", "SUMMARY")
+# print(processed_query("1680036452.mp3", "SUMMARY"))

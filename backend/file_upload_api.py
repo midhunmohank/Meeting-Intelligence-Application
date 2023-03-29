@@ -42,24 +42,6 @@ async def upload_file(file: UploadFile = File(...)):
     except botocore.exceptions.ClientError as e:
         return {"error": f"Client error: {e}"}
     
-# @app.get("/downloadfile/{file_name}")
-# async def download_file(file_name: str, response: Response):
-#     """
-#     Downloads a file from an S3 bucket.
-#     """
-#     try:
-#         # Create a key for the file in the S3 bucket
-#         key = f"uploads/{file_name}"
-        
-#         # Download the file from S3
-#         response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
-#         s3.download_fileobj(S3_BUCKET, key, response.body)
-#         return response
-#     except botocore.exceptions.ParamValidationError as e:
-#         return {"error": f"Parameter validation error: {e}"}
-#     except botocore.exceptions.ClientError as e:
-#         return {"error": f"Client error: {e}"}
-
 
 
 @app.get("/audio_files/")
@@ -70,12 +52,15 @@ async def processed_files():
     return {"files" : db_helper.processed_files()}
 
 
-@app.get("/processed_query_result/{file}/{audio}")
-async def processed_query(audio, query):
+@app.get("/processed_query_result/{file}/{query}")
+async def processed_query(file, query):
     """_summary_
 
     Args:
         query (_type_): Pass the already processed query 
+        file (_type_): Pass the file name to be queried 
     """
     
-    return 
+    return {"query_response" : db_helper.processed_query(file, query)}
+
+
