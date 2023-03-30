@@ -32,24 +32,6 @@ def processed_files():
     return [result[0] for result in results]
 
 
-def processed_files():
-    
-    conn = create_connection()
-    cursor = conn.cursor()
-
-    # Execute the SQL query
-    cursor.execute("SELECT AUDIO_FILE FROM QUERY_RESULTS")
-
-    # Fetch all the results into a list
-    results = cursor.fetchall()
-
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
-    
-    return [result[0] for result in results]
-
-
 # print(processed_files())
 
 def processed_query(file, query):

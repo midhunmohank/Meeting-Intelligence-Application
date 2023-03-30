@@ -4,7 +4,7 @@ import base64
 from helper_functions import airflow_restapi_caller as arc
 
 # Set page title
-st.set_page_config(page_title="Meeting Intelligence Application")
+st.set_page_config(page_title="AudioAnalytika")
 
 # Define allowed file types
 ALLOWED_EXTENSIONS = {'mp3'}
@@ -31,7 +31,7 @@ def allowed_file(filename):
 
 # Create home page
 def home():
-    st.title("Meeting Intelligence Application")
+    st.title("AudioAnalytika")
     st.write("Please upload an MP3 file:")
     file = st.file_uploader("", type=["mp3"])
     if file is not None:
