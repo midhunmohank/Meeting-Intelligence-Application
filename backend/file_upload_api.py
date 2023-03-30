@@ -4,6 +4,7 @@ import botocore
 import os
 import time
 import db_helper
+import gpt_helper
 
 app = FastAPI()
 
@@ -62,5 +63,16 @@ async def processed_query(file, query):
     """
     
     return {"query_response" : db_helper.processed_query(file, query)}
+
+
+@app.get("/custom_query/{file}/{query}")
+async def custom_query(file, query):
+    """_summary_
+    Args:
+        query (_type_): Pass the already processed query 
+        file (_type_): Pass the file name to be queried 
+    """
+    
+    return {"query_response" : gpt_helper.get_response_gpt(file, query)}
 
 

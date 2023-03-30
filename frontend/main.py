@@ -1,6 +1,7 @@
 import streamlit as st
 import requests 
 import base64
+from helper_functions import airflow_restapi_caller as arc
 
 # Set page title
 st.set_page_config(page_title="Meeting Intelligence Application")
@@ -42,19 +43,29 @@ def home():
             if response.status_code == 200:
                 st.success("File uploaded successfully to S3 bucket. Creating Transcriot and running GPT on it!")
                 st.write(response.json()["filename_in_s3"])
-                payload_airflow = {
-                    "conf": {
-                        "bucket_name": "goes-team6",
-                        "file_name": response.json()["filename_in_s3"], 
-                        "file_name_trans" : response.json()["filename_in_s3"].replace("mp3", "txt")
-                    }
+                # payload_airflow = {
+                #     "conf": {
+                #         "bucket_name": "goes-team6",
+                #         "file_name": response.json()["filename_in_s3"], 
+                #         "file_name_trans" : response.json()["filename_in_s3"].replace("mp3", "txt")
+                #     }
+                # }
+                
+                # response_airflow = requests.post(f"{host_airflow}/api/v1/dags/ad_hoc/dagRuns", headers=headers_airflow, json=payload_airflow)
+                # st.write(response_airflow.json())
+                
+                conf= {
+                    "bucket_name": "goes-team6",
+                    "file_name": response.json()["filename_in_s3"], 
+                    "file_name_trans" : response.json()["filename_in_s3"].replace("mp3", "txt")
                 }
+                response_airflow = arc.trigger_dag(dag_id='ad_hoc',data =conf)
+
+                # response_airflow = requests.post(f"{host_airflow}/api/v1/dags/ad_hoc/dagRuns", headers=headers_airflow, json=payload_airflow)
+                # st.write(response_airflow.json())
                 
-                response_airflow = requests.post(f"{host_airflow}/api/v1/dags/ad_hoc/dagRuns", headers=headers_airflow, json=payload_airflow)
-                st.write(response_airflow.json())
-                
-                if response_airflow.status_code == 200:
-                    st.success("Summerizing Complete!")
+                # if response_airflow.status_code == 200:
+                st.success("Summerizing Complete!")
             # Store the file on cloud or perform further processing
         else:
             st.error("Invalid file type. Please upload an MP3 file.")
@@ -70,12 +81,19 @@ def home():
     
     if question_type == "Custom question":
         question = st.text_input("Enter a question related to the uploaded file")
+        if question:
+            selected_txt = selected_file.replace("mp3", "txt")
+            x = requests.get(f'{host}/custom_query/{selected_txt}/{question}')
+            if x.status_code == 200:
+                st.write(x.json()["query_response"])
+                
+            else:
+                st.write("Could Not Fetch File Please try again")
+                
         
-        
-    elif question_type == "Summary of the meeting":
+    elif question_type == "Summary of the audio":
         st.write(requests.get(f'{host}/processed_query_result/{selected_file}/SUMMARY').json()["query_response"])
         
-    
     elif question_type == "Languages used in the audio":
         st.write(requests.get(f'{host}/processed_query_result/{selected_file}/LANGUAGE').json()["query_response"])
         
