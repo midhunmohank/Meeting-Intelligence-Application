@@ -32,7 +32,7 @@ def make_composer2_web_server_request(url: str, method: str = "GET", **kwargs: A
     return authed_session.request(method, url, **kwargs)
 
 
-def trigger_dag(web_server_url: str, dag_id: str, data: dict) -> str:
+def trigger_dag(dag_id: str, data: dict) -> str:
     """
     Make a request to trigger a dag using the stable Airflow 2 REST API.
     https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
@@ -42,7 +42,7 @@ def trigger_dag(web_server_url: str, dag_id: str, data: dict) -> str:
       dag_id: The DAG ID.
       data: Additional configuration parameters for the DAG run (json).
     """
-
+    web_server_url = "https://0ba1849854ed4c458db8e34bd91e36dc-dot-us-east1.composer.googleusercontent.com"
     endpoint = f"api/v1/dags/{dag_id}/dagRuns"
     request_url = f"{web_server_url}/{endpoint}"
     json_data = {"conf": data}
@@ -76,12 +76,11 @@ if __name__ == "__main__":
     # gcloud composer environments describe example-environment \
     #  --location=your-composer-region \
     #  --format="value(config.airflowUri)"
-    web_server_url = (
-        "https://0ba1849854ed4c458db8e34bd91e36dc-dot-us-east1.composer.googleusercontent.com"
-    )
+    # web_server_url = (
+    #     "https://0ba1849854ed4c458db8e34bd91e36dc-dot-us-east1.composer.googleusercontent.com"
+    # )
 
-    response_text = trigger_dag(
-        web_server_url=web_server_url, dag_id=dag_id, data=dag_config
+    response_text = trigger_dag(dag_id=dag_id, data=dag_config
     )
 
     print(response_text)
