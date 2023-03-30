@@ -33,9 +33,9 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         # Create a key for the file in the S3 bucket
         timestamp = int(time.time())
-        key = f"uploads/{timestamp}.mp3"
+        key = f"{timestamp}.mp3"
         # Upload the file to S3
-        s3.upload_fileobj(file.file, s3_bucket, key)
+        s3.upload_fileobj(file.file, s3_bucket, f"uploads/{key}")
         return {"message": "File uploaded successfully!", "filename_in_s3":key}
     except botocore.exceptions.ParamValidationError as e:
         return {"error": f"Parameter validation error: {e}"}

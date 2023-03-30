@@ -42,29 +42,45 @@ def create_connection():
     )
     return conn
 
+
+
 #########Function to generate transcript 
-def generate_txt_file(bucket_name, file_name):
-    s3.download_file(bucket_name, file_name, '/tmp/audio_file.mp3')
+def generate_txt_file(bucket_name, file_name, file_name_trans):
+    s3.download_file(bucket_name, f'uploads/{file_name}', '/tmp/audio_file.mp3')
     # Transcribe the audio using the Whisper API
     transcript = openai.Audio.transcribe("whisper-1", open('/tmp/audio_file.mp3', 'rb'))
     transcript = transcript.to_dict()
+    # Upload text file to S3 bucket    
+    file_path = '/tmp/transcript.txt'
+    with open(file_path, 'w') as f:
+        f.write(transcript["text"])
+    s3.upload_file(file_path, bucket_name, f"transcripts/{file_name_trans}")
+
     return transcript
 
-
+# transcript = {"text":"This is a dummy text. Hello from airflow"}
+#     # Upload text file to S3 bucket    
+# file_path = '/tmp/transcript.txt'
+# with open(file_path, 'w') as f:
+#     f.write(transcript["text"])
+# s3.upload_file(file_path, 'goes-team6', f"transcripts/test-file-from-python.txt")
 
 def send_query(audio_file, transcript):
+    
     response_summary = get_response_gpt(f"Give me a summary of the following meeting transcript {transcript}")
-    response_no_of_people  = get_response_gpt(f"Provide some feedback on the nature of the discussion the tone of the attendees in this meeting from the transcript {transcript}")
-    summary = response_summary["choices"][0]["message"]["content"] 
-    no_of_people = response_no_of_people["choices"][0]["message"]["content"]
-    query = f"INSERT INTO QUERY_RESULTS (AUDIO_FILE, SUMMARY, NO_OF_PEOPLE, UPLOADED_AT) VALUES ('{audio_file}', '{summary}', '{no_of_people}', CURRENT_TIMESTAMP);"
+    response_tone  = get_response_gpt(f"Provide some feedback on the nature of the discussion the tone of the attendees in this meeting from the transcript {transcript}")
+    response_language = get_response_gpt(f"List the languages used in this meeting transcript {transcript}")
+    summary = response_summary["choices"][0]["message"]["content"].replace("'", "") 
+    tone = response_tone["choices"][0]["message"]["content"].replace("'", "")
+    language = response_language["choices"][0]["message"]["content"].replace("'", "")
+    query = f"INSERT INTO QUERY_RESULTS (AUDIO_FILE, SUMMARY, TONE, LANGUAGE, UPLOADED_AT) VALUES ('{audio_file}', '{summary}', '{tone}', '{language}', CURRENT_TIMESTAMP);"
     conn = create_connection()
     cur = conn.cursor()
     cur.execute(query)
     conn.commit()
     cur.close()
     conn.close()
-    return response_summary, response_no_of_people
+    return response_summary
     
 
 dag = DAG(
@@ -81,7 +97,7 @@ with dag:
     get_transcript = PythonOperator(
         task_id="get_transcript",
         python_callable=generate_txt_file,
-        op_kwargs={"bucket_name":"goes-team6", "file_name":"test-rec.mp3"} ,       
+        op_kwargs={"bucket_name":"goes-team6", "file_name":'{{ dag_run.conf["file_name"] }}', "file_name_trans": '{{ dag_run.conf["file_name_trans"] }}'} ,       
         provide_context=True,
 
     )
@@ -90,7 +106,7 @@ with dag:
         task_id="send_query",
         python_callable=send_query, 
         op_kwargs={
-            'audio_file': '{{ dag_run.conf["file_name"] }}'.split('/')[-1],
+            'audio_file': '{{ dag_run.conf["file_name"] }}',
             "transcript": "{{ task_instance.xcom_pull(task_ids='get_transcript', key='return_value') }}"
         },
         provide_context=True,

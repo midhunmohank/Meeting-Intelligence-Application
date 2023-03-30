@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = {'mp3'}
 host = 'http://localhost:8000'
 headers = {'accept': 'application/json'}
 
-host_airflow = 'service-417868509081@gs-project-accounts.iam.gserviceaccount.com'
+host_airflow = 'http://localhost:8080'
 headers_airflow = {
     "Content-Type": "application/json",
     "Authorization": "Basic <base64-encoded-username-password>"
@@ -41,11 +41,12 @@ def home():
             
             if response.status_code == 200:
                 st.success("File uploaded successfully to S3 bucket. Creating Transcriot and running GPT on it!")
-                response.json()["filename_in_s3"]
+                st.write(response.json()["filename_in_s3"])
                 payload_airflow = {
                     "conf": {
                         "bucket_name": "goes-team6",
-                        "file_name": response.json()["filename_in_s3"]
+                        "file_name": response.json()["filename_in_s3"], 
+                        "file_name_trans" : response.json()["filename_in_s3"].replace("mp3", "txt")
                     }
                 }
                 
@@ -57,6 +58,38 @@ def home():
             # Store the file on cloud or perform further processing
         else:
             st.error("Invalid file type. Please upload an MP3 file.")
+            
+    # Define question section
+    st.write("## Ask a question")
+    processed_files = requests.get(f"{host}/audio_files/").json()["files"]        
+    selected_file = st.selectbox("Select an uploaded file", processed_files, key="uploaded_files")
+    st.write(f"The selected file is {selected_file}")
+    # Define question input
+    questions = ["Summary of the audio", "Languages used in the audio", "Tone of the audio", "Custom question"]
+    question_type = st.selectbox("Select a question type", questions)
+    
+    if question_type == "Custom question":
+        question = st.text_input("Enter a question related to the uploaded file")
+        
+        
+    elif question_type == "Summary of the meeting":
+        st.write(requests.get(f'{host}/processed_query_result/{selected_file}/SUMMARY').json()["query_response"])
+        
+    
+    elif question_type == "Languages used in the audio":
+        st.write(requests.get(f'{host}/processed_query_result/{selected_file}/LANGUAGE').json()["query_response"])
+        
+    elif question_type == "Tone of the audio":
+        st.write(requests.get(f'{host}/processed_query_result/{selected_file}/TONE').json()["query_response"])
+
+        
+    
+    # Define submit button
+    # if file and question_type:
+    #     if st.button("Go"):
+    #         st.write("### Results")
+    #         st.write(f"You asked: **{question}**")
+    #         st.write("Dummy text box")
 
 # Display home page
 home()
