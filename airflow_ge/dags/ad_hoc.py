@@ -9,13 +9,13 @@ from airflow.models.param import Param
 from datetime import timedelta, datetime
 import snowflake.connector
 
-openai.api_key = "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"
+openai.api_key = ""
 
 
 s3 = boto3.client(
     's3',
-    aws_access_key_id="AKIAZW4EPXNK5AQIEQWO",
-    aws_secret_access_key="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",
+    aws_access_key_id="",
+    aws_secret_access_key="",
 )
 
 
@@ -34,7 +34,7 @@ def get_response_gpt(message):
 def create_connection():
     conn = snowflake.connector.connect(
         user='CHATGPT',
-        password='Breakingbad@1',
+        password='',
         account='pigjtsl-ed61481',
         warehouse='COMPUTE_WH',
         database='INTEL',
