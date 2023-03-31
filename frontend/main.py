@@ -9,7 +9,9 @@ st.set_page_config(page_title="AudioAnalytika")
 # Define allowed file types
 ALLOWED_EXTENSIONS = {'mp3'}
 
+
 host = 'http://backfastapi:8000'
+
 headers = {'accept': 'application/json'}
 
 host_airflow = 'http://localhost:8080'
@@ -43,6 +45,7 @@ def home():
             if response.status_code == 200:
                 st.success("File uploaded successfully to S3 bucket. Creating Transcriot and running GPT on it!")
                 st.write(response.json()["filename_in_s3"])
+#Code to trigger DAG if airflow is not hosted
                 # payload_airflow = {
                 #     "conf": {
                 #         "bucket_name": "goes-team6",
@@ -54,6 +57,7 @@ def home():
                 # response_airflow = requests.post(f"{host_airflow}/api/v1/dags/ad_hoc/dagRuns", headers=headers_airflow, json=payload_airflow)
                 # st.write(response_airflow.json())
                 
+
                 conf= {
                     "bucket_name": "goes-team6",
                     "file_name": response.json()["filename_in_s3"], 
@@ -62,10 +66,12 @@ def home():
                 response_airflow = arc.trigger_dag(dag_id='ad_hoc',data =conf)
 
                 # response_airflow = requests.post(f"{host_airflow}/api/v1/dags/ad_hoc/dagRuns", headers=headers_airflow, json=payload_airflow)
+
                 # st.write(response_airflow.json())
                 
                 # if response_airflow.status_code == 200:
                 st.success("Summerizing Complete!")
+
             # Store the file on cloud or perform further processing
         else:
             st.error("Invalid file type. Please upload an MP3 file.")
@@ -81,6 +87,7 @@ def home():
     
     if question_type == "Custom question":
         question = st.text_input("Enter a question related to the uploaded file")
+
         if question:
             selected_txt = selected_file.replace("mp3", "txt")
             x = requests.get(f'{host}/custom_query/{selected_txt}/{question}')
@@ -94,6 +101,11 @@ def home():
     elif question_type == "Summary of the audio":
         st.write(requests.get(f'{host}/processed_query_result/{selected_file}/SUMMARY').json()["query_response"])
         
+        
+    elif question_type == "Summary of the meeting":
+        st.write(requests.get(f'{host}/processed_query_result/{selected_file}/SUMMARY').json()["query_response"])
+       
+      
     elif question_type == "Languages used in the audio":
         st.write(requests.get(f'{host}/processed_query_result/{selected_file}/LANGUAGE').json()["query_response"])
         
@@ -111,5 +123,3 @@ def home():
 
 # Display home page
 home()
-
-

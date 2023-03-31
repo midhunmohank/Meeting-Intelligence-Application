@@ -7,6 +7,7 @@ from google.oauth2 import service_account
 # Path to your JSON key file
 KEY_PATH = "helper_functions/creds.json"  #Place the json file in this directory with the same name and GCP credentials 
 
+
 # Scopes to access Google Cloud services
 SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 # Create Credentials object from the JSON key file and scopes
@@ -72,25 +73,3 @@ def trigger_dag(dag_id: str, data: dict) -> str:
         return response.text
 
 
-if __name__ == "__main__":
-
-    # TODO(developer): replace with your values
-    dag_id = "ad_hoc"  # Replace with the ID of the DAG that you want to run.
-    conf= {
-        "bucket_name": "goes-team6",
-        "file_name": "1680154907.mp3", 
-        "file_name_trans" : "1680154907.txt"
-    }
-    # Replace with configuration parameters for the DAG run.
-    # Replace web_server_url with the Airflow web server address. To obtain this
-    # URL, run the following command for your environment:
-    # gcloud composer environments describe example-environment \
-    #  --location=your-composer-region \
-    #  --format="value(config.airflowUri)"
-    # web_server_url = (
-    #     "https://0ba1849854ed4c458db8e34bd91e36dc-dot-us-east1.composer.googleusercontent.com"
-    # )
-
-    response_text = trigger_dag(dag_id=dag_id, data=conf)
-
-    print(response_text)
