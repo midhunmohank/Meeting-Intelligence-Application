@@ -9,7 +9,7 @@ from airflow.models.param import Param
 from datetime import timedelta, datetime
 import snowflake.connector
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 s3 = boto3.client(

@@ -9,7 +9,7 @@ st.set_page_config(page_title="AudioAnalytika")
 # Define allowed file types
 ALLOWED_EXTENSIONS = {'mp3'}
 
-host = 'http://localhost:8000'
+host = 'http://backfastapi:8000'
 headers = {'accept': 'application/json'}
 
 host_airflow = 'http://localhost:8080'

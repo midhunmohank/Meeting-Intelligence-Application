@@ -2,13 +2,23 @@ from typing import Any
 import google.auth
 from google.auth.transport.requests import AuthorizedSession
 import requests
+from google.oauth2 import service_account
 
+# Path to your JSON key file
+KEY_PATH = "helper_functions/creds.json"  #Place the json file in this directory with the same name and GCP credentials 
 
+# Scopes to access Google Cloud services
+SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
+# Create Credentials object from the JSON key file and scopes
+CREDENTIALS = service_account.Credentials.from_service_account_file(
+    KEY_PATH, scopes=SCOPES
+)
 # Following GCP best practices, these credentials should be
 # constructed at start-up time and used throughout
 # https://cloud.google.com/apis/docs/client-libraries-best-practices
-AUTH_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
-CREDENTIALS, _ = google.auth.default(scopes=[AUTH_SCOPE])
+# AUTH_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
+# CREDENTIALS, _ = google.auth.default(scopes=[AUTH_SCOPE])
+
 
 
 def make_composer2_web_server_request(url: str, method: str = "GET", **kwargs: Any) -> google.auth.transport.Response:
@@ -66,9 +76,11 @@ if __name__ == "__main__":
 
     # TODO(developer): replace with your values
     dag_id = "ad_hoc"  # Replace with the ID of the DAG that you want to run.
-    dag_config = {
-        "bucket_name": "goes-team6",  "file_name": "1680036452.mp3"
-    }  
+    conf= {
+        "bucket_name": "goes-team6",
+        "file_name": "1680154907.mp3", 
+        "file_name_trans" : "1680154907.txt"
+    }
     # Replace with configuration parameters for the DAG run.
     # Replace web_server_url with the Airflow web server address. To obtain this
     # URL, run the following command for your environment:
@@ -79,7 +91,6 @@ if __name__ == "__main__":
     #     "https://0ba1849854ed4c458db8e34bd91e36dc-dot-us-east1.composer.googleusercontent.com"
     # )
 
-    response_text = trigger_dag(dag_id=dag_id, data=dag_config
-    )
+    response_text = trigger_dag(dag_id=dag_id, data=conf)
 
     print(response_text)

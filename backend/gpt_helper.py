@@ -2,7 +2,7 @@ import openai
 import boto3 
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 s3 = boto3.client(
@@ -17,7 +17,7 @@ bucket = 'goes-team6'
 
 def read_s3_text_file(bucket_name, file_key):
     # Create an S3 client
-    s3 = boto3.client('s3')
+    # s3 = boto3.client('s3')
     
     # Read the file contents from S3
     response = s3.get_object(Bucket=bucket_name, Key=file_key)

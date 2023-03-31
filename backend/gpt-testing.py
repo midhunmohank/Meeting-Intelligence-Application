@@ -1,18 +1,18 @@
-import os
-import openai
+# import os
+# import openai
 
-openai.api_key = "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"
+# openai.api_key = "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"
 
 
-def send_query(message):
-    return openai.ChatCompletion.create(
-        model = "gpt-3.5-turbo", 
-        messages = [
-            {"role" : "user", "content" : message}
-        ]
-    )
+# def send_query(message):
+#     return openai.ChatCompletion.create(
+#         model = "gpt-3.5-turbo", 
+#         messages = [
+#             {"role" : "user", "content" : message}
+#         ]
+#     )
 
-def get_reply(response):
-    return response['choices'][0]['message']['content'] 
+# def get_reply(response):
+#     return response['choices'][0]['message']['content'] 
      
 

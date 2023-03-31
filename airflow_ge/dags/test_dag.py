@@ -1,79 +1,79 @@
-# Importing required packages
+# # Importing required packages
 
-import openai
+# import openai
 
-import boto3
+# import boto3
 
-import json
-
-
-
-
-# Whisper API_KEY
-
-openai.api_key = "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"
+# import json
 
 
 
 
-# takes bucket_name, folder_name, file_name as input and returns the transcript
+# # Whisper API_KEY
 
-def generate_txt_file(bucket_name, folder_name, file_name):
-
-    s3 = boto3.client('s3', region_name = 'us-east-1')
-
-    response = s3.get_object(Bucket=bucket_name, Key=f"{folder_name}/{file_name}")
-
-    audio_key = f"{folder_name}/{file_name}"
-
-    audio_file = s3.download_file(bucket_name, audio_key, '/tmp/audio_file.mp3')
+# openai.api_key = "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"
 
 
 
 
-    # Transcribe the audio using the Whisper API
+# # takes bucket_name, folder_name, file_name as input and returns the transcript
 
-    transcript = openai.Audio.transcribe("whisper-1", open('/tmp/audio_file.mp3', 'rb'))
+# def generate_txt_file(bucket_name, folder_name, file_name):
 
-    transcript = transcript.to_dict()
+#     s3 = boto3.client('s3', region_name = 'us-east-1')
 
-    return transcript
+#     response = s3.get_object(Bucket=bucket_name, Key=f"{folder_name}/{file_name}")
 
-    
+#     audio_key = f"{folder_name}/{file_name}"
 
-
-
-
-generated_transcript = generate_txt_file('meetingintelligence','adhocprocess', 'Small_Talk.mp3')
-
-print(generated_transcript)
+#     audio_file = s3.download_file(bucket_name, audio_key, '/tmp/audio_file.mp3')
 
 
 
 
-def upload_txt_to_s3(bucket_name, folder_name, file_name, text_content):
+#     # Transcribe the audio using the Whisper API
 
-    s3 = boto3.client('s3', region_name='us-east-1')
+#     transcript = openai.Audio.transcribe("whisper-1", open('/tmp/audio_file.mp3', 'rb'))
 
+#     transcript = transcript.to_dict()
 
+#     return transcript
 
-
-    # Write text content to a file
-
-    file_path = '/tmp/transcript.txt'
-
-    with open(file_path, 'w') as f:
-
-        f.write(text_content)
+#     
 
 
 
 
-    # Upload text file to S3 bucket
+# generated_transcript = generate_txt_file('meetingintelligence','adhocprocess', 'Small_Talk.mp3')
 
-    s3.upload_file(file_path, bucket_name, f"{folder_name}/{file_name}")
-
-
+# print(generated_transcript)
 
 
-# print(upload_txt_to_s3('meetingintelligence', 'processedtext/', 'proccessed_text.txt', generated_transcript['text']))
+
+
+# def upload_txt_to_s3(bucket_name, folder_name, file_name, text_content):
+
+#     s3 = boto3.client('s3', region_name='us-east-1')
+
+
+
+
+#     # Write text content to a file
+
+#     file_path = '/tmp/transcript.txt'
+
+#     with open(file_path, 'w') as f:
+
+#         f.write(text_content)
+
+
+
+
+#     # Upload text file to S3 bucket
+
+#     s3.upload_file(file_path, bucket_name, f"{folder_name}/{file_name}")
+
+
+
+
+# # print(upload_txt_to_s3('meetingintelligence', 'processedtext/', 'proccessed_text.txt', generated_transcript['text']))
