@@ -2,13 +2,11 @@ import openai
 import boto3 
 
 
-openai.api_key = "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"
+openai.api_key = ""
 
 
 s3 = boto3.client(
-    's3',
-    aws_access_key_id="AKIAZW4EPXNK5AQIEQWO",
-    aws_secret_access_key="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",
+    's3'
 )
 
 bucket = 'goes-team6'
