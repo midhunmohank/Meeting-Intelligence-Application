@@ -1,2 +1,6 @@
 venv/
+airflow_ge/db_data
+airflow_ge/logs
+airflow_ge/plugins
+airflow_ge/working_dir
 frontend/helper_functions/creds.json
