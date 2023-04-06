@@ -1,6 +1,12 @@
 # Meeting-Intelligence-Application
 
 
+INTRODUCTION
+The purpose of this report is to describe the architecture and features of a meeting intelligence application that we built using Streamlit, Whisper API, ChatGPT API, Docker, Airflow, GCP, and Snowflake DB. This application is designed to help users analyze and extract insights from meeting recordings. In the following sections, we will describe the architecture and functionality of the application in more detail.
+
+Team Members: Midhun, Sanjay, Snehil, Vikash
+
+
 #Application Links 
 
 [API Link](http://54.236.17.95:8000/docs) <br>
