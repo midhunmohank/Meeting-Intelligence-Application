@@ -7,10 +7,83 @@ The purpose of this report is to describe the architecture and features of a mee
 Team Members: Midhun, Sanjay, Snehil, Vikash
 
 
-#Application Links 
+# Application Links 
 
 [API Link](http://54.236.17.95:8000/docs) <br>
 [Application Link](http://54.236.17.95:8081/) <br>
+
+# Architecture Diagram
+![Architecture](https://raw.githubusercontent.com/BigDataIA-Spring2023-Team06/Documentation/main/meetingint.jpg)
+
+# Project Structure
+```
+.
+├── README.md
+├── airflow_ge
+│   ├── Dockerfile
+│   ├── dags
+│   │   ├── __pycache__
+│   │   │   ├── ad_hoc.cpython-37.pyc
+│   │   │   ├── gpt_helper.cpython-37.pyc
+│   │   │   ├── gpt_helper.cpython-38.pyc
+│   │   │   └── test_dags.cpython-37.pyc
+│   │   ├── ad_hoc.py
+│   │   ├── batch.py
+│   │   ├── gpt_helper.py
+│   │   ├── test_dag.py
+│   │   └── test_dags.py
+│   ├── docker-compose.yml
+│   ├── main.py
+│   └── requirements.txt
+├── backend
+│   ├── Dockerfile
+│   ├── db_helper.py
+│   ├── file_upload_api.py
+│   ├── gpt-testing.py
+│   ├── gpt_helper.py
+│   ├── readme.md
+│   └── requirements.txt
+├── docker-compose.yml
+└── frontend
+    ├── Dockerfile
+    ├── helper_functions
+    │   └── airflow_restapi_caller.py
+    ├── main.py
+    ├── requirements.txt
+    └── test_api.py
+
+7 directories, 27 files
+mohan@midhun Meeting-Intelligence-Application % tree
+.
+├── README.md
+├── airflow_ge
+│   ├── Dockerfile
+│   ├── dags
+│   │   ├── ad_hoc.py
+│   │   ├── batch.py
+│   │   ├── gpt_helper.py
+│   │   ├── test_dag.py
+│   │   └── test_dags.py
+│   ├── docker-compose.yml
+│   ├── main.py
+│   └── requirements.txt
+├── backend
+│   ├── Dockerfile
+│   ├── db_helper.py
+│   ├── file_upload_api.py
+│   ├── gpt-testing.py
+│   ├── gpt_helper.py
+│   ├── readme.md
+│   └── requirements.txt
+├── docker-compose.yml
+└── frontend
+    ├── Dockerfile
+    ├── helper_functions
+    │   └── airflow_restapi_caller.py
+    ├── main.py
+    ├── requirements.txt
+    └── test_api.py
+```
 
 # API Documentation
 
