@@ -11,7 +11,7 @@ Team Members: Midhun, Sanjay, Snehil, Vikash
 
 [API Link](http://54.236.17.95:8000/docs) <br>
 [Application Link](http://54.236.17.95:8081/) <br>
-
+[Code Labs](https://codelabs-preview.appspot.com/?file_id=1ppz1fPuKfDzGlCRigbNPCAVZ6Q7FURRGHjp3CNpaAYY#4)
 # Architecture Diagram
 ![Architecture](https://raw.githubusercontent.com/BigDataIA-Spring2023-Team06/Documentation/main/meetingint.jpg)
 
