@@ -114,15 +114,14 @@ Endpoint to get the response to a custom query for a given file.
 - `query_response`: The response to the custom query.
 
 
-### Attestations
-
+#### Attestations
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT
 
 AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK
 
-Contribution:
+Contribution: 
 
-Midhun Mohan Kudayattutharayil: 25%
-Sanjay Kashyap: 25%
-Snehil Aryan: 25%
-Vikash Singh: 25%
+* Midhun Mohan Kudayattutharayil: 25%
+* Sanjay Kashyap: 25%
+* Snehil Aryan: 25%
+* Vikash Singh: 25%
