@@ -22,43 +22,6 @@ Team Members: Midhun, Sanjay, Snehil, Vikash
 ├── airflow_ge
 │   ├── Dockerfile
 │   ├── dags
-│   │   ├── __pycache__
-│   │   │   ├── ad_hoc.cpython-37.pyc
-│   │   │   ├── gpt_helper.cpython-37.pyc
-│   │   │   ├── gpt_helper.cpython-38.pyc
-│   │   │   └── test_dags.cpython-37.pyc
-│   │   ├── ad_hoc.py
-│   │   ├── batch.py
-│   │   ├── gpt_helper.py
-│   │   ├── test_dag.py
-│   │   └── test_dags.py
-│   ├── docker-compose.yml
-│   ├── main.py
-│   └── requirements.txt
-├── backend
-│   ├── Dockerfile
-│   ├── db_helper.py
-│   ├── file_upload_api.py
-│   ├── gpt-testing.py
-│   ├── gpt_helper.py
-│   ├── readme.md
-│   └── requirements.txt
-├── docker-compose.yml
-└── frontend
-    ├── Dockerfile
-    ├── helper_functions
-    │   └── airflow_restapi_caller.py
-    ├── main.py
-    ├── requirements.txt
-    └── test_api.py
-
-7 directories, 27 files
-mohan@midhun Meeting-Intelligence-Application % tree
-.
-├── README.md
-├── airflow_ge
-│   ├── Dockerfile
-│   ├── dags
 │   │   ├── ad_hoc.py
 │   │   ├── batch.py
 │   │   ├── gpt_helper.py
@@ -149,3 +112,17 @@ Endpoint to get the response to a custom query for a given file.
 #### Response
 
 - `query_response`: The response to the custom query.
+
+
+### Attestations
+
+WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT
+
+AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK
+
+Contribution:
+
+Midhun Mohan Kudayattutharayil: 25%
+Sanjay Kashyap: 25%
+Snehil Aryan: 25%
+Vikash Singh: 25%
